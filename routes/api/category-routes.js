@@ -59,10 +59,25 @@ router.post("/", (req, res) => {
 
 //put route to update its "id" value
 router.put("/:id", (req, res) => {
+  Category.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((data) => {
+      if (!data[0]) {
+        res.status(404).json({ message: "There is no category with this id!" });
+        return;
+      }
+      res.json(data);
+    })
+    .catch((err) => {
+      log(err);
+      res.status(500).json(err);
+    });
 });
 
 //delete route to destroy its 'id' value
-router.delete("/:id", (req, res) => {
-});
+router.delete("/:id", (req, res) => {});
 
 module.exports = router;
