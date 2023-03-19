@@ -26,8 +26,34 @@ router.get("/", (req, res) => {
 
 // get one product
 router.get("/:id", (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+
+  // this will obtain one product using the id 
+  Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [
+      {
+        model: Category,
+        attributes: ["id", "category_name"],
+      },
+      {
+        model: Tag,
+        attributes: ["id", "tag_name"],
+      },
+    ],
+  })
+    .then((data) => {
+      if (!data) {
+        res.status(404).json({ message: "There is no product wit that id! " });
+        return;
+      }
+      res.json(data);
+    })
+    .catch((err) => {
+      log(err);
+      res.json(500).json(err);
+    });
 });
 
 // create new product
