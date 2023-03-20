@@ -8,12 +8,12 @@ router.get("/", (req, res) => {
     include: [
       {
         model: Product,
-        attributes: ["id", "product_name", "price", "category_id"],
+        attributes: ["id", "product_name", "price", "stock","category_id"],
       },
     ],
   })
-    .then((data) => res.json(data))
-    .catch((err) => {
+    .then(data => res.json(data))
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
@@ -28,18 +28,18 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: Product,
-        attributes: ["id", "product_name", "price", "category_id"],
+        attributes: ["id", "product_name", "price", "stock", "category_id"],
       },
     ],
   })
-    .then((data) => {
+    .then(data => {
       if (!data) {
         res.json(404).json({ message: "There is no catergory with this id! " });
         return;
       }
       res.json(data);
     })
-    .catch((err) => {
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
@@ -50,8 +50,8 @@ router.post("/", (req, res) => {
   Category.create({
     catergory_name: req.body.catergory_name,
   })
-    .then((data) => res.json(data))
-    .catch((err) => {
+    .then(data => res.json(data))
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
@@ -64,14 +64,14 @@ router.put("/:id", (req, res) => {
       id: req.params.id,
     },
   })
-    .then((data) => {
+    .then(data => {
       if (!data[0]) {
         res.status(404).json({ message: "There is no category with this id!" });
         return;
       }
       res.json(data);
     })
-    .catch((err) => {
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
@@ -84,7 +84,7 @@ router.delete("/:id", (req, res) => {
       id: req.params.id,
     },
   })
-    .then((data) => {
+    .then(data => {
       if (!data) {
         res
           .status(404)
@@ -96,7 +96,7 @@ router.delete("/:id", (req, res) => {
       res.json(data);
     })
 
-    .catch((err) => {
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
