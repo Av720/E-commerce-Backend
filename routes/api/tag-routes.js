@@ -34,8 +34,8 @@ router.get('/:id', (req, res) => {
     ]
   })
     .then(data => {
-      if (!dbTagData) {
-        res.status(404).json({ message: 'No tag found with this id' });
+      if (!data) {
+        res.status(404).json({ message: 'There is no tag with that id!' });
         return;
       }
       res.json(data);
@@ -68,10 +68,10 @@ router.put('/:id', (req, res) => {
   })
     .then(data => {
       if (!data[0]) {
-        res.status(404).json({ message: 'No tag found with this id' });
+        res.status(404).json({ message: 'There is no tag with that id!' });
         return;
       }
-      res.json(dbTagData);
+      res.json(data);
     })
     .catch(err => {
       console.log(err);
@@ -89,7 +89,7 @@ router.delete('/:id', (req, res) => {
   })
     .then(data => {
       if (!data) {
-        res.status(404).json({ message: 'No tag found with this id' });
+        res.status(404).json({ message: 'There is no tag with that id!' });
         return;
       }
       res.json(data);
