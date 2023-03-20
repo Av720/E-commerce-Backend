@@ -17,8 +17,8 @@ router.get("/", (req, res) => {
       },
     ],
   })
-    .then((data) => res.json(data))
-    .catch((err) => {
+    .then(data => res.json(data))
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
@@ -42,14 +42,14 @@ router.get("/:id", (req, res) => {
       },
     ],
   })
-    .then((data) => {
+    .then(data => {
       if (!data) {
         res.status(404).json({ message: "There is no product wit that id! " });
         return;
       }
       res.json(data);
     })
-    .catch((err) => {
+    .catch(err => {
       log(err);
       res.json(500).json(err);
     });
@@ -136,16 +136,16 @@ router.delete("/:id", (req, res) => {
       id: req.params.id,
     },
   })
-    .then((data) => {
+    .then(data => {
       if (!data) {
         res
           .status(404)
-          .json({ message: "There is no product dound with that id!" });
+          .json({ message: "There is no product found with that id!" });
         return;
       }
       res.json(data);
     })
-    .catch((err) => {
+    .catch(err => {
       log(err);
       res.status(500).json(err);
     });
