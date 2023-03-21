@@ -6,20 +6,21 @@ router.get("/", (req, res) => {
   // this route will find all products
 
   Product.findAll({
+    attributes: ['id', 'product_name', 'price', 'stock'],
     include: [
       {
         model: Category,
-        attributes: ["id", "category_name"],
+        attributes: ['category_name']
       },
       {
         model: Tag,
-        attributes: ["id", "tag_name"],
-      },
-    ],
+        attributes: ['tag_name']
+      }
+    ]
   })
-    .then(data => res.json(data))
+    .then(dbProductData => res.json(dbProductData))
     .catch(err => {
-      log(err);
+      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -42,14 +43,14 @@ router.get("/:id", (req, res) => {
       },
     ],
   })
-    .then(data => {
+    .then((data) => {
       if (!data) {
         res.status(404).json({ message: "There is no product wit that id! " });
         return;
       }
       res.json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       log(err);
       res.json(500).json(err);
     });
@@ -58,16 +59,13 @@ router.get("/:id", (req, res) => {
 // create new product
 router.post("/", (req, res) => {
   //this route will create a new product
-  Product.create({
-    product_name: req.body.product_name,
-    price: req.body.price,
-    stock: req.body.stock,
-    category_id: req.body.category_id,
-    tagIds: req.body.tag_id,
-  })
+  Product.create(req.body)
+
+
     .then((product) => {
+      // console.log(req.body.tagIds)
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      if (req.body.tagIds && req.body.tagIds.length  ) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
@@ -136,7 +134,7 @@ router.delete("/:id", (req, res) => {
       id: req.params.id,
     },
   })
-    .then(data => {
+    .then((data) => {
       if (!data) {
         res
           .status(404)
@@ -145,7 +143,7 @@ router.delete("/:id", (req, res) => {
       }
       res.json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       log(err);
       res.status(500).json(err);
     });
